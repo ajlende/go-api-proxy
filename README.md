@@ -1,4 +1,3 @@
-
 # go-api-proxy
 
 A barebones Go app, which can easily be deployed to Heroku.
@@ -39,7 +38,6 @@ $ heroku open
 or
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
 
 ## Documentation
 
