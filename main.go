@@ -13,17 +13,17 @@ import (
 )
 
 // Remove the prefix from the URL Path
-func removePrefix(prefix string, handle http.HandlerFunc) http.HandlerFunc {
-	return func(res http.ResponseWriter, req *http.Request) {
-		req.URL.Path = strings.TrimPrefix(req.URL.Path, prefix)
-		handle(res, req)
+func removePrefix(prefix string, h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		r.URL.Path = strings.TrimPrefix(r.URL.Path, prefix)
+		h(w, r)
 	}
 }
 
 // Handle the "/" route
 func handleIndex() http.HandlerFunc {
-	return func(res http.ResponseWriter, req *http.Request) {
-		res.Write([]byte("OK"))
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("OK"))
 	}
 }
 
@@ -31,12 +31,12 @@ func handleIndex() http.HandlerFunc {
 func handleProxy(target string) http.HandlerFunc {
 	url, _ := url.Parse(target)
 	proxy := httputil.NewSingleHostReverseProxy(url)
-	return func(res http.ResponseWriter, req *http.Request) {
-		req.URL.Host = url.Host
-		req.URL.Scheme = url.Scheme
-		req.Header.Set("X-Forwarded-Host", req.Header.Get("Host"))
-		req.Host = url.Host
-		proxy.ServeHTTP(res, req)
+	return func(w http.ResponseWriter, r *http.Request) {
+		r.URL.Host = url.Host
+		r.URL.Scheme = url.Scheme
+		r.Header.Set("X-Forwarded-Host", r.Header.Get("Host"))
+		r.Host = url.Host
+		proxy.ServeHTTP(w, r)
 	}
 }
 
