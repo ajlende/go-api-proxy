@@ -42,6 +42,7 @@ func handleProxy(target string) (http.HandlerFunc, *httputil.ReverseProxy, error
 	return handleFunc, proxy, err
 }
 
+// Remove Access-Control-Allow-Origin Header from the response so we can set our own
 func clearCors(r *http.Response) error {
 	delete(r.Header, "Access-Control-Allow-Origin")
 	return nil
