@@ -28,21 +28,30 @@ func handleIndex() http.HandlerFunc {
 }
 
 // Proxy a request to the given origin
-func handleProxy(target string) http.HandlerFunc {
-	url, _ := url.Parse(target)
+func handleProxy(target string) (http.HandlerFunc, *httputil.ReverseProxy, error) {
+	url, err := url.Parse(target)
 	proxy := httputil.NewSingleHostReverseProxy(url)
-	return func(w http.ResponseWriter, r *http.Request) {
+	handleFunc := func(w http.ResponseWriter, r *http.Request) {
 		r.URL.Host = url.Host
 		r.URL.Scheme = url.Scheme
 		r.Header.Set("X-Forwarded-Host", r.Header.Get("Host"))
 		r.Host = url.Host
 		proxy.ServeHTTP(w, r)
 	}
+
+	return handleFunc, proxy, err
+}
+
+func clearCors(r *http.Response) error {
+	delete(r.Header, "Access-Control-Allow-Origin")
+	return nil
 }
 
 // Handle GitHub requests by adding the GitHub auth token to the request
 func handleGitHub(target string, authToken string) http.HandlerFunc {
-	proxyHandler := handleProxy(target)
+	proxyHandler, proxy, _ := handleProxy(target)
+	proxy.ModifyResponse = clearCors
+
 	return func(res http.ResponseWriter, req *http.Request) {
 		req.Header.Set("Authorization", "Bearer "+authToken)
 		proxyHandler(res, req)
@@ -65,8 +74,12 @@ func main() {
 	router.HandleFunc("/github/", removePrefix("/github", handleGitHub(ghURL, ghToken)))
 	router.HandleFunc("/", handleIndex())
 
-	corsMiddleware := cors.New(cors.Options{
+	handler := http.Handler(router)
+
+	handler = cors.New(cors.Options{
 		AllowedOrigins: strings.Split(allowedOrigins, ","),
-	})
-	http.ListenAndServe(":"+port, corsMiddleware.Handler(router))
+		Debug:          true,
+	}).Handler(router)
+
+	http.ListenAndServe(":"+port, handler)
 }
