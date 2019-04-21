@@ -20,14 +20,14 @@ func removePrefix(prefix string, handle http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// Handles the "/" route
+// Handle the "/" route
 func handleIndex() http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("OK"))
 	}
 }
 
-// Proxys a request to the given origin
+// Proxy a request to the given origin
 func handleProxy(target string) http.HandlerFunc {
 	url, _ := url.Parse(target)
 	proxy := httputil.NewSingleHostReverseProxy(url)
@@ -40,7 +40,7 @@ func handleProxy(target string) http.HandlerFunc {
 	}
 }
 
-// Handles GitHub requests by adding the GitHub auth token to the request
+// Handle GitHub requests by adding the GitHub auth token to the request
 func handleGitHub(target string, authToken string) http.HandlerFunc {
 	proxyHandler := handleProxy(target)
 	return func(res http.ResponseWriter, req *http.Request) {
