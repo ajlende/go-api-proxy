@@ -1,13 +1,24 @@
-GO_BUILD_ENV := CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-DOCKER_BUILD=$(shell pwd)/.docker_build
-DOCKER_CMD=$(DOCKER_BUILD)/go-api-proxy
+PACKAGE=go-api-proxy
+OUTPUT_DIR=$(shell pwd)/bin
 
-$(DOCKER_CMD): clean
-	mkdir -p $(DOCKER_BUILD)
-	$(GO_BUILD_ENV) go build -v -o $(DOCKER_CMD) .
+.PHONY: all build test clean config deploy local
+
+all: build
+
+build: clean
+	go build -v -o $(OUTPUT_DIR)/$(PACKAGE) .
+
+test: 
+	go test -v .
 
 clean:
-	rm -rf $(DOCKER_BUILD)
+	rm -rf $(OUTPUT_DIR)
 
-heroku: $(DOCKER_CMD)
-	heroku container:push web
+config:
+	cat .env | xargs heroku config:set
+
+deploy: config
+	git push heroku master
+
+local: build
+	heroku local web

@@ -1,28 +1,27 @@
 # go-api-proxy
 
-A barebones Go app, which can easily be deployed to Heroku.
+A Go proxy app, which can easily be deployed to Heroku.
 
-This application supports the [Getting Started with Go on Heroku](https://devcenter.heroku.com/articles/getting-started-with-go) article - check it out.
-
-## Running Locally
+## Dependencies
 
 Make sure you have [Go](http://golang.org/doc/install) version 1.12 or newer and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
+## Environment
+
+Create a `.env` file with the following variables:
+
 ```sh
-$ git clone https://github.com/ajlende/go-api-proxy.git
-$ cd go-api-proxy
-$ go build -o bin/go-api-proxy -v .
-github.com/mattn/go-colorable
-gopkg.in/bluesuncorp/validator.v5
-golang.org/x/net/context
-github.com/heroku/x/hmetrics
-github.com/gin-gonic/gin/render
-github.com/manucorporat/sse
-github.com/heroku/x/hmetrics/onload
-github.com/gin-gonic/gin/binding
-github.com/gin-gonic/gin
-github.com/ajlende/go-api-proxy
-$ heroku local
+GITHUB_ACCESS_TOKEN=<your-github-access-token>
+GITHUB_API_URL=https://api.github.com
+ALLOWED_ORIGINS=https://one.example.com,https://two.example.com
+```
+
+## Running Locally
+
+```sh
+git clone https://github.com/ajlende/go-api-proxy.git
+cd go-api-proxy
+make local
 ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
@@ -30,9 +29,9 @@ Your app should now be running on [localhost:5000](http://localhost:5000/).
 ## Deploying to Heroku
 
 ```sh
-$ heroku create
-$ git push heroku master
-$ heroku open
+heroku create
+make deploy
+heroku open
 ```
 
 or
