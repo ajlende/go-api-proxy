@@ -1,12 +1,12 @@
 {
-  "name": "Start on Heroku: Go",
-  "description": "Go Getting Started Example App",
+  "name": "Go API Proxy",
+  "description": "Go API Proxy for ajlende.com",
   "keywords": [
-    "getting-started",
     "go",
-    "sample",
-    "example"
+    "api",
+    "proxy",
+    "heroku"
   ],
-  "website": "http://github.com/heroku/go-getting-started",
-  "repository": "http://github.com/heroku/go-getting-started"
+  "website": "http://github.com/ajlende/go-api-proxy",
+  "repository": "http://github.com/ajlende/go-api-proxy"
 }

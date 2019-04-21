@@ -1,4 +1,4 @@
-module github.com/heroku/go-getting-started
+module github.com/ajlende/go-api-proxy
 
 go 1.12
 

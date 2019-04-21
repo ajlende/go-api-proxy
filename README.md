@@ -1,5 +1,5 @@
 
-# go-getting-started
+# go-api-proxy
 
 A barebones Go app, which can easily be deployed to Heroku.
 
@@ -10,9 +10,9 @@ This application supports the [Getting Started with Go on Heroku](https://devcen
 Make sure you have [Go](http://golang.org/doc/install) version 1.12 or newer and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
 ```sh
-$ git clone https://github.com/heroku/go-getting-started.git
-$ cd go-getting-started
-$ go build -o bin/go-getting-started -v .
+$ git clone https://github.com/ajlende/go-api-proxy.git
+$ cd go-api-proxy
+$ go build -o bin/go-api-proxy -v .
 github.com/mattn/go-colorable
 gopkg.in/bluesuncorp/validator.v5
 golang.org/x/net/context
@@ -22,7 +22,7 @@ github.com/manucorporat/sse
 github.com/heroku/x/hmetrics/onload
 github.com/gin-gonic/gin/binding
 github.com/gin-gonic/gin
-github.com/heroku/go-getting-started
+github.com/ajlende/go-api-proxy
 $ heroku local
 ```
 
